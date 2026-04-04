@@ -1,24 +1,18 @@
-import { BrowserRouter } from 'react-router-dom';
-import { Layout, BlogList } from './components';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Layout } from './components';
+import { HomePage, PostDetailPage, AddPostPage, EditPostPage, NotFoundPage } from './pages';
 
 function App() {
   return (
     <BrowserRouter>
       <Layout>
-        <div className="container mx-auto px-4 py-8">
-          {/* Page Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
-              Latest Posts
-            </h1>
-            <p className="text-gray-600">
-              Discover stories, thinking, and expertise from writers on any topic.
-            </p>
-          </div>
-
-          {/* Blog Posts */}
-          <BlogList />
-        </div>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/post/:id" element={<PostDetailPage />} />
+          <Route path="/add" element={<AddPostPage />} />
+          <Route path="/edit/:id" element={<EditPostPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
       </Layout>
     </BrowserRouter>
   );
