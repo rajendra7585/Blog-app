@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Button from '../components/common/Button';
+import Button from '../common/Button';
 
 function PostForm({ initialData = {}, onSubmit, isEditing = false }) {
   const [formData, setFormData] = useState({
@@ -10,6 +10,7 @@ function PostForm({ initialData = {}, onSubmit, isEditing = false }) {
     tags: initialData.tags?.join(', ') || ''
   });
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -43,16 +44,21 @@ function PostForm({ initialData = {}, onSubmit, isEditing = false }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!validateForm()) return;
 
+    setIsSubmitting(true);
+    
     // Parse tags
     const tags = formData.tags
       .split(',')
       .map(tag => tag.trim())
       .filter(tag => tag.length > 0);
+
+    // Simulate a small delay for better UX
+    await new Promise(resolve => setTimeout(resolve, 300));
 
     onSubmit({
       title: formData.title.trim(),
@@ -60,13 +66,22 @@ function PostForm({ initialData = {}, onSubmit, isEditing = false }) {
       author: formData.author.trim(),
       tags: tags.length > 0 ? tags : ['General']
     });
+    
+    setIsSubmitting(false);
+  };
+
+  // Character count helper
+  const getCharacterCountColor = () => {
+    if (formData.content.length < 20) return 'text-gray-400';
+    if (formData.content.length < 100) return 'text-yellow-600';
+    return 'text-green-600';
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 animate-fade-in">
       {/* Title */}
       <div>
-        <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="title" className="block text-sm font-semibold text-gray-700 mb-2">
           Title <span className="text-red-500">*</span>
         </label>
         <input
@@ -76,18 +91,21 @@ function PostForm({ initialData = {}, onSubmit, isEditing = false }) {
           value={formData.title}
           onChange={handleChange}
           placeholder="Enter a compelling title..."
-          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-            errors.title ? 'border-red-500 bg-red-50' : 'border-gray-300'
-          }`}
+          className={`input-field ${errors.title ? 'input-error' : ''}`}
         />
         {errors.title && (
-          <p className="mt-1 text-sm text-red-600">{errors.title}</p>
+          <p className="mt-1.5 text-sm text-red-600 flex items-center gap-1">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            {errors.title}
+          </p>
         )}
       </div>
 
       {/* Author */}
       <div>
-        <label htmlFor="author" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="author" className="block text-sm font-semibold text-gray-700 mb-2">
           Author <span className="text-red-500">*</span>
         </label>
         <input
@@ -98,19 +116,25 @@ function PostForm({ initialData = {}, onSubmit, isEditing = false }) {
           onChange={handleChange}
           placeholder="Your name..."
           disabled={isEditing}
-          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors ${
-            errors.author ? 'border-red-500 bg-red-50' : 'border-gray-300'
-          } ${isEditing ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+          className={`input-field ${errors.author ? 'input-error' : ''} ${isEditing ? 'bg-gray-100 cursor-not-allowed opacity-60' : ''}`}
         />
         {errors.author && (
-          <p className="mt-1 text-sm text-red-600">{errors.author}</p>
+          <p className="mt-1.5 text-sm text-red-600 flex items-center gap-1">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            {errors.author}
+          </p>
+        )}
+        {isEditing && (
+          <p className="mt-1 text-sm text-gray-500">Author cannot be changed</p>
         )}
       </div>
 
       {/* Tags */}
       <div>
-        <label htmlFor="tags" className="block text-sm font-medium text-gray-700 mb-1">
-          Tags
+        <label htmlFor="tags" className="block text-sm font-semibold text-gray-700 mb-2">
+          Tags <span className="text-gray-400 font-normal">(optional)</span>
         </label>
         <input
           type="text"
@@ -118,15 +142,15 @@ function PostForm({ initialData = {}, onSubmit, isEditing = false }) {
           name="tags"
           value={formData.tags}
           onChange={handleChange}
-          placeholder="React, JavaScript, Web Development (comma separated)"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+          placeholder="React, JavaScript, Web Development"
+          className="input-field"
         />
-        <p className="mt-1 text-sm text-gray-500">Separate tags with commas</p>
+        <p className="mt-1.5 text-sm text-gray-500">Separate multiple tags with commas</p>
       </div>
 
       {/* Content */}
       <div>
-        <label htmlFor="content" className="block text-sm font-medium text-gray-700 mb-1">
+        <label htmlFor="content" className="block text-sm font-semibold text-gray-700 mb-2">
           Content <span className="text-red-500">*</span>
         </label>
         <textarea
@@ -135,29 +159,54 @@ function PostForm({ initialData = {}, onSubmit, isEditing = false }) {
           value={formData.content}
           onChange={handleChange}
           rows={12}
-          placeholder="Write your blog post content here..."
-          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors resize-y ${
-            errors.content ? 'border-red-500 bg-red-50' : 'border-gray-300'
-          }`}
+          placeholder="Write your blog post content here. You can use multiple paragraphs..."
+          className={`input-field resize-y min-h-[200px] ${errors.content ? 'input-error' : ''}`}
         />
         {errors.content && (
-          <p className="mt-1 text-sm text-red-600">{errors.content}</p>
+          <p className="mt-1.5 text-sm text-red-600 flex items-center gap-1">
+            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            {errors.content}
+          </p>
         )}
-        <p className="mt-1 text-sm text-gray-500">
-          {formData.content.length} characters
-        </p>
+        <div className="mt-1.5 flex items-center justify-between text-sm">
+          <span className={getCharacterCountColor()}>
+            {formData.content.length} characters
+          </span>
+          {formData.content.length >= 20 && (
+            <span className="text-green-600 flex items-center gap-1">
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              Minimum reached
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Actions */}
-      <div className="flex items-center justify-end gap-4 pt-4 border-t border-gray-200">
+      <div className="flex items-center justify-end gap-4 pt-6 border-t border-gray-200">
         <Link
           to="/"
-          className="px-5 py-2.5 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+          className="px-5 py-2.5 text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg font-medium transition-all"
         >
           Cancel
         </Link>
-        <Button type="submit" variant="primary" size="md">
-          {isEditing ? 'Update Post' : 'Publish Post'}
+        <Button type="submit" variant="primary" size="md" disabled={isSubmitting}>
+          {isSubmitting ? (
+            <>
+              <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              </svg>
+              {isEditing ? 'Updating...' : 'Publishing...'}
+            </>
+          ) : (
+            <>
+              {isEditing ? 'Update Post' : 'Publish Post'}
+            </>
+          )}
         </Button>
       </div>
     </form>
