@@ -5,8 +5,11 @@ export {
   updatePost, 
   deletePost, 
   likePost,
+  unlikePost,
   selectAllPosts,
   selectPostById,
   selectPostsStatus,
-  selectPostsError
+  selectPostsError,
+  selectLikedPosts,
+  selectIsPostLiked
 } from './postsSlice';

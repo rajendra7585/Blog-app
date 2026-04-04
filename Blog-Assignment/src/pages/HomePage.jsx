@@ -15,7 +15,7 @@ function HomePage() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
           <div className="max-w-xl">
             <h1 className="text-3xl md:text-4xl font-bold mb-3">
-              Welcome to BlogApp
+              Welcome to Notezy
             </h1>
             <p className="text-blue-100 text-lg mb-6">
               Discover stories, share your ideas, and connect with a community of writers and readers.
