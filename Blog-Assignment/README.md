@@ -1,4 +1,4 @@
-# Blog Application
+# Notezy - Blog Application
 
 A modern, responsive blog application built with **React**, **Redux Toolkit**, **Context API**, and **Tailwind CSS**. This application allows users to create, read, update, delete, and like blog posts.
 
@@ -214,17 +214,24 @@ showSuccess('Post published successfully!');
 
 1. **Build Docker image**
    ```bash
-   docker build -t blog-app .
+   docker build -t notezy-blog .
    ```
 
 2. **Run container**
    ```bash
-   docker run -p 80:80 blog-app
+   docker run -p 3000:80 notezy-blog
    ```
+   Then open http://localhost:3000
 
 3. **Using Docker Compose**
    ```bash
    docker-compose up -d
+   ```
+   Then open http://localhost:3000
+
+4. **Stop container**
+   ```bash
+   docker-compose down
    ```
 
 ### Deploy to Firebase Hosting
