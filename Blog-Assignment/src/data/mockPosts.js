@@ -20,7 +20,7 @@ Here's what changed everything for me:
 The future of work is flexible, and those who master remote work will have a significant advantage in the job market.`,
     author: 'Priya Sharma',
     createdAt: '2026-04-01T10:00:00Z',
-    likes: 47,
+    likes: 0,
     tags: ['Remote Work', 'Productivity', 'Career']
   },
   {
@@ -41,7 +41,7 @@ Six months later, my blood pressure is back to normal. I've lost 8 pounds withou
 I still have an occasional espresso on special mornings. But green tea has become my daily companion, and I'm genuinely grateful for that forced change.`,
     author: 'Marcus Williams',
     createdAt: '2026-04-02T14:30:00Z',
-    likes: 89,
+    likes: 0,
     tags: ['Health', 'Lifestyle', 'Wellness']
   },
   {
@@ -62,7 +62,7 @@ To anyone considering a career switch into tech: age is not a barrier. Your life
 Today, two years into my tech career, I'm a mid-level developer working on projects I'm genuinely excited about. And yes, I work alongside brilliant 25-year-olds. We learn from each other.`,
     author: 'Jennifer Martinez',
     createdAt: '2026-04-03T09:15:00Z',
-    likes: 156,
+    likes: 0,
     tags: ['Career Change', 'Coding', 'Inspiration']
   },
   {
@@ -87,7 +87,7 @@ I'm not suggesting everyone become a minimalist. But understanding the true cost
 The fashion industry produces 10% of global carbon emissions. Change won't come from awareness alone, but awareness is where it starts.`,
     author: 'David Chen',
     createdAt: '2026-04-03T16:45:00Z',
-    likes: 203,
+    likes: 0,
     tags: ['Sustainability', 'Fashion', 'Environment']
   },
   {
@@ -116,7 +116,7 @@ Was it worth it? Absolutely. That $80,000 cloud hanging over my head is gone. No
 Your situation might be different, but the principles remain: track everything, cut ruthlessly, earn more, stay focused.`,
     author: 'Amanda Foster',
     createdAt: '2026-04-04T08:00:00Z',
-    likes: 312,
+    likes: 0,
     tags: ['Personal Finance', 'Debt', 'Money']
   },
   {
@@ -141,7 +141,7 @@ I'm not suggesting everyone should run a marathon. But I am suggesting that we a
 What's yours? And what's really stopping you?`,
     author: 'Rajesh Kapoor',
     createdAt: '2026-04-04T11:30:00Z',
-    likes: 178,
+    likes: 0,
     tags: ['Fitness', 'Marathon', 'Motivation']
   }
 ];
